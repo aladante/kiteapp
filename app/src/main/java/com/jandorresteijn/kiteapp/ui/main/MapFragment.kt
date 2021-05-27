@@ -33,11 +33,11 @@ class MapFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val controller = mMap.controller
 
-        val longitude = 36.7783
-        val latitude = 119.4179
+        val longitude = 3.9041
+        val latitude = 52.3676
         val mapPoint = GeoPoint(latitude, longitude)
 
-        controller.setZoom(9.5)
+        controller.setZoom(8.5)
 
         controller.animateTo(mapPoint)
 
