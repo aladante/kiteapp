@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.jandorresteijn.kiteapp.R
+import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 
 
@@ -26,15 +26,22 @@ class MapFragment : Fragment() {
     ): View {
         val v: View = inflater.inflate(R.layout.map_fragment, null)
         mMap = v.findViewById<View>(R.id.map) as MapView
-        return inflater.inflate(R.layout.map_fragment, container, false)
+        return v
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val controller = mMap.controller
 
+        val longitude = 36.7783
+        val latitude = 119.4179
+        val mapPoint = GeoPoint(latitude, longitude)
+
+        controller.setZoom(9.5)
+
+        controller.animateTo(mapPoint)
+
+    }
 
 
 //    override fun onCreate(savedInstanceState: Bundle?) {
