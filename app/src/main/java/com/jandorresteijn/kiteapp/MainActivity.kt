@@ -36,8 +36,6 @@ class MainActivity : AppCompatActivity() {
         val ctx: Context = getApplicationContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
         checkPermissionsState();
-
-
     }
 
     private fun initNavigation() {
