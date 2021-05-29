@@ -6,12 +6,14 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.jandorresteijn.kiteapp.ui.main.LocationViewModel
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -21,7 +23,6 @@ import org.osmdroid.views.MapView
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: LocationViewModel
-    private lateinit var map: MapView
     private  val MULTIPLE_PERMISSION_REQUEST_CODE = 4
 
 
@@ -35,20 +36,19 @@ class MainActivity : AppCompatActivity() {
         val ctx: Context = getApplicationContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
         checkPermissionsState();
+
+
     }
 
     private fun initNavigation() {
-        // The NavController
         val navController = findNavController(R.id.navHostFragment)
-
-        // Connect the navHostFragment with the ActionBar.
         val appBarConfiguration = AppBarConfiguration(navController.graph)
-
-
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
+        findViewById<Toolbar>(R.id.toolbar)
+            .setupWithNavController(navController, appBarConfiguration)
     }
 
 
+    // check premissions needed to run the application
     private fun checkPermissionsState() {
         val internetPermissionCheck = ContextCompat.checkSelfPermission(
             this,
