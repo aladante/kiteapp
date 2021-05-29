@@ -18,8 +18,7 @@ https://stackoverflow.com/questions/17230798/get-the-latitude-and-longitude-of-a
 
 
 #TODO
-1. Click event on map
-2. notification sound
-3. push message
-4. code cleanup
-5. comments
+1. notification sound
+2. push message
+3. code cleanup
+4. comments
