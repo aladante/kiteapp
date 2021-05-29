@@ -1,4 +1,4 @@
-package com.jandorresteijn.kiteapp.ui.main
+    package com.jandorresteijn.kiteapp.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -32,15 +32,11 @@ class MapFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val controller = mMap.controller
-
         val longitude = 3.9041
         val latitude = 52.3676
         val mapPoint = GeoPoint(latitude, longitude)
-
         controller.setZoom(8.5)
-
         controller.animateTo(mapPoint)
-
     }
 
 

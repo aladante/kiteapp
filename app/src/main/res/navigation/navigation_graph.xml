@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.jandorresteijn.kiteapp.ui.main.MapFragment"
-        android:label="Home"
         tools:layout="@layout/map_fragment">
         <action
             android:id="@+id/action_homeFragment_to_createQuizFragment"
@@ -18,7 +17,5 @@
     <fragment
     android:id="@+id/notification_fragment"
     android:name="com.jandorresteijn.kiteapp.ui.main.NotificationFragment"
-    android:label="Create Quiz"
     tools:layout="@layout/notification_fragment" />
-
 </navigation>

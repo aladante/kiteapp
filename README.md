@@ -6,6 +6,8 @@ Based on that information the app will send a notification to the user that the 
 Fly breezy folks
 
 
+
+
 ## MAP
 
 https://github.com/osmdroid/osmdroid
@@ -13,3 +15,12 @@ https://github.com/osmdroid/osmdroid
 
 ## Stackoverflow easy lookup
 https://stackoverflow.com/questions/17230798/get-the-latitude-and-longitude-of-a-clicked-location-on-the-map-in-osmdroid
+
+
+#TODO
+0. Add appbar
+1. Click event on map
+2. notification sound
+3. push message
+4. code cleanup
+5. comments
