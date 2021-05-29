@@ -44,15 +44,20 @@ class NotificationFragment : Fragment() {
             val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
-                textView.text = SimpleDateFormat("HH:mm").format(cal.time)
+                //TODO use @String module with variable
+                textView.text =
+                    "You will be notified at " + SimpleDateFormat("HH:mm").format(cal.time)
             }
-            TimePickerDialog(activity, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+            TimePickerDialog(
+                activity,
+                timeSetListener,
+                cal.get(Calendar.HOUR_OF_DAY),
+                cal.get(Calendar.MINUTE),
+                true
+            ).show()
         }
-
         return root
     }
-
-
 
 
     override fun onDestroyView() {

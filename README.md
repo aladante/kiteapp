@@ -18,7 +18,6 @@ https://stackoverflow.com/questions/17230798/get-the-latitude-and-longitude-of-a
 
 
 #TODO
-0. Add appbar
 1. Click event on map
 2. notification sound
 3. push message
