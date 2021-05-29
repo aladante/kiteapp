@@ -11,7 +11,7 @@
         tools:layout="@layout/map_fragment"
     />
     <fragment
-    android:id="@+id/notification_fragment"
-    android:name="com.jandorresteijn.kiteapp.ui.main.NotificationFragment"
+    android:id="@+id/nav_notification"
+    android:name="com.jandorresteijn.kiteapp.ui.main.notification.NotificationFragment"
     tools:layout="@layout/notification_fragment" />
 </navigation>
