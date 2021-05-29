@@ -3,17 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/home_fragment">
 
     <fragment
-        android:id="@+id/homeFragment"
+        android:id="@+id/home_fragment"
         android:name="com.jandorresteijn.kiteapp.ui.main.MapFragment"
-        tools:layout="@layout/map_fragment">
-        <action
-            android:id="@+id/action_homeFragment_to_createQuizFragment"
-            app:destination="@id/notification_fragment"
-            app:enterAnim="@anim/nav_default_enter_anim" />
-    </fragment    >
+        tools:layout="@layout/map_fragment"
+    />
     <fragment
     android:id="@+id/notification_fragment"
     android:name="com.jandorresteijn.kiteapp.ui.main.NotificationFragment"

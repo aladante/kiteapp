@@ -11,5 +11,6 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.KiteApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
