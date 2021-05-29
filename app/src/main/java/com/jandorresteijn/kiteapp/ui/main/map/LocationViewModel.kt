@@ -1,4 +1,4 @@
-package com.jandorresteijn.kiteapp.ui.main
+package com.jandorresteijn.kiteapp.ui.main.map
 
 import androidx.lifecycle.ViewModel
 import java.util.function.DoubleBinaryOperator
