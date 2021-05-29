@@ -62,12 +62,12 @@ class MapFragment : Fragment() {
         val longitude = 3.9041
         val latitude = 52.367
         val mapPoint = GeoPoint(latitude, longitude)
-        val marker2 = resources.getDrawable(R.drawable.marker)
+        val icon = resources.getDrawable(R.drawable.ic_menu_camera)
         val startMarker = Marker(mMap)
         startMarker.position = mapPoint
-        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-
-
+        startMarker.icon = icon
+        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_TOP)
+        mMap.overlays.add(startMarker)
     }
 
     private fun addEvent() {
