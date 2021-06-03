@@ -8,12 +8,20 @@
     tools:context=".ui.main.map.MapFragment">
 
     <Button
-        android:id="@+id/confirm_button"
-        android:layout_width="match_parent"
+        android:id="@+id/test_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="test"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/confirm_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="set location"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/test_button"
         app:layout_constraintStart_toStartOf="parent" />
 
     <org.osmdroid.views.MapView

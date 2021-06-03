@@ -1,7 +1,9 @@
 package com.jandorresteijn.kiteapp
 
 import android.Manifest
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -17,6 +19,7 @@ import com.google.android.material.navigation.NavigationView
 import com.jandorresteijn.kiteapp.databinding.MainActivityBinding
 import com.jandorresteijn.kiteapp.ui.main.map.LocationViewModel
 import org.osmdroid.config.Configuration
+import java.util.logging.Filter
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +29,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: MainActivityBinding
+    private var BootReceiver: BootReceiver = BootReceiver()
+
+    override fun onStart() {
+        super.onStart()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +50,9 @@ class MainActivity : AppCompatActivity() {
         val ctx: Context = getApplicationContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
         checkPermissionsState();
+
+        var filter = IntentFilter("com.jandorresteijn.LEAN")
+        registerReceiver(BootReceiver, filter)
     }
 
     private fun initNavigation() {

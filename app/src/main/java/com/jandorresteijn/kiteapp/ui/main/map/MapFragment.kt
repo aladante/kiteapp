@@ -1,5 +1,7 @@
 package com.jandorresteijn.kiteapp.ui.main.map
 
+import android.content.BroadcastReceiver
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +15,7 @@ import com.jandorresteijn.kiteapp.R
 import com.jandorresteijn.kiteapp.entity.Location
 import com.jandorresteijn.kiteapp.entity.LocationRepository
 import com.jandorresteijn.kiteapp.ui.main.MainViewModel
+import kotlinx.android.synthetic.main.map_fragment.*
 import kotlinx.coroutines.runBlocking
 import org.osmdroid.api.IMapController
 import org.osmdroid.events.MapEventsReceiver
@@ -112,6 +115,15 @@ class MapFragment : Fragment() {
             } else {
                 Toast.makeText(activity, "No location set", Toast.LENGTH_LONG)
             }
+        }
+
+        test_button.setOnClickListener {
+            Intent().also { intent ->
+                intent.setAction("com.jandorresteijn.LEAN")
+                intent.putExtra("data", "Nothing to see here, move along.")
+                context!!.sendBroadcast(intent)
+            }
+
         }
     }
 
