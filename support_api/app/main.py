@@ -1,0 +1,29 @@
+from typing import Optional
+from fastapi import FastAPI
+from pydantic import BaseSettings
+from pydantic.main import BaseModel
+
+class Settings(BaseSettings):
+    app_name: str = "Awesome API"
+    counter :int =0
+
+app = FastAPI()
+
+settings = Settings()
+
+
+class ResponseModel(BaseModel):
+    canyoukit: bool
+
+@app.get("/wind_server")
+async def root(lat: Optional[str] = None, lon: Optional[str] = None) -> ResponseModel:
+
+    if settings.counter < 5:
+        settings.counter += 1 
+        print(settings.counter)
+        return ResponseModel(canyoukit=False) 
+    else:
+        settings.counter = 0
+        print(settings.counter)
+        return ResponseModel(canyoukit=True) 
+

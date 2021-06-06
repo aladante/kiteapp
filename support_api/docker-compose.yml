@@ -1,0 +1,10 @@
+version: "3.3"
+
+services:
+  wind-server:
+    build: .
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/app
+
