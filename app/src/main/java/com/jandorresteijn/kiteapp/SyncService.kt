@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
-import androidx.core.app.ServiceCompat.START_STICKY
+
 
 
 class SyncService : Service() {
@@ -36,6 +36,9 @@ class SyncService : Service() {
     @Synchronized
     private fun syncData() {
         Log.e("iets", "nog ietsssss ")
+        val url = "http://www.localhost:8000/wind_server"
+
+
     }
 
     companion object {

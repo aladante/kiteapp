@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         var filter = IntentFilter("com.jandorresteijn.LEAN")
         registerReceiver(BootReceiver, filter)
+
     }
 
     private fun initNavigation() {
