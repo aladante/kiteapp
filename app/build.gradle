@@ -79,9 +79,6 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
 
-    // http client
-    def ktor_version= "1.6.0"
-    implementation "io.ktor:ktor-client-android:$ktor_version"
-    implementation "io.ktor:ktor-client-cio:$ktor_version"
-    implementation "io.ktor:ktor-client-serialization-jvm:$ktor_version"
+    // HTTP lib
+    implementation("com.android.volley:volley:1.1.1")
 }

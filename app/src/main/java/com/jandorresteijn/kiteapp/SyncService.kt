@@ -5,7 +5,14 @@ import android.content.Intent
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
-
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.VolleyError
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import org.json.JSONObject
 
 
 class SyncService : Service() {
@@ -36,10 +43,25 @@ class SyncService : Service() {
     @Synchronized
     private fun syncData() {
         Log.e("iets", "nog ietsssss ")
-        val url = "http://www.localhost:8000/wind_server"
+        // call async http request
+        // own ip here local host is blocked
+        var url = "http://192.168.178.17:8000/wind_server"
 
+        val queue = Volley.newRequestQueue(this)
+
+// Request a string response from the provided URL.
+        val stringRequest = StringRequest(Request.Method.GET, url,
+            Response.Listener<String> { response ->
+                // Display the first 500 characters of the response string.
+                Log.e("request", "Response is: ${response.toString()}")
+            },
+            Response.ErrorListener { e -> Log.e("e", e.message!!)})
+
+// Add the request to the RequestQueue.
+        queue.add(stringRequest)
 
     }
+
 
     companion object {
         // default interval for syncing data
