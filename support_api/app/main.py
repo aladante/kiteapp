@@ -16,14 +16,14 @@ class ResponseModel(BaseModel):
     canyoukit: bool
 
 @app.get("/wind_server")
-async def root(lat: Optional[str] = None, lon: Optional[str] = None) -> ResponseModel:
+async def root(lat: Optional[str] = None, lon: Optional[str] = None) -> bool:
 
     if settings.counter < 5:
         settings.counter += 1 
         print(settings.counter)
-        return ResponseModel(canyoukit=False) 
+        return False
     else:
         settings.counter = 0
         print(settings.counter)
-        return ResponseModel(canyoukit=True) 
+        return True
 

@@ -57,6 +57,12 @@ class SyncService : Service() {
             },
             Response.ErrorListener { e -> Log.e("e", e.message!!)})
 
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url,
+            Response.Listener<JSONObject> { response ->
+                // Display the first 500 characters of the response string.
+                Log.e("request", "Response is: ${response.toString()}")
+            },
+            Response.ErrorListener { e -> Log.e("e", e.message!!)})
 // Add the request to the RequestQueue.
         queue.add(stringRequest)
 
