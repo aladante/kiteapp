@@ -45,7 +45,7 @@ class SyncService : Service() {
         Log.e("iets", "nog ietsssss ")
         // call async http request
         // own ip here local host is blocked
-        var url = "http://192.168.178.17:8000/wind_server"
+        var url = "http://<YOUR_IP_HERE>:8000/wind_server"
 
         val queue = Volley.newRequestQueue(this)
 
