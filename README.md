@@ -34,7 +34,5 @@ https://stackoverflow.com/questions/17230798/get-the-latitude-and-longitude-of-a
 
 
 #TODO
-1. notification sound
-2. push message
-3. code cleanup
+1. alarm time adjustments
 4. comments
