@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
@@ -12,27 +13,25 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.VolleyError
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import org.json.JSONObject
 
-private val CHANNEL_ID = "i.apps.notifications"
+
+private const val CHANNEL_ID = "i.apps.notifications"
 
 class SyncService : Service() {
 
     private var mHandler: Handler? = null
 
     // task to be run here
-    private val runnableService: Runnable = object : Runnable {
+    private val runnableService: Runnable by lazy {
+        object : Runnable {
         override fun run() {
             syncData()
             // Repeat this runnable code block again every ... min
             mHandler?.postDelayed(this, DEFAULT_SYNC_INTERVAL)
         }
+    }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -53,35 +52,41 @@ class SyncService : Service() {
         // call async http request
         // own ip here local host is blocked
 
-        var url = "http://172.20.50.228:8000/wind_server"
+        val url = "http://172.20.50.228:8000/wind_server"
 
         val queue = Volley.newRequestQueue(this)
 
 // Request a string response from the provided URL.
         val stringRequest = StringRequest(Request.Method.GET, url,
-            Response.Listener<String> { response ->
+            { response ->
                 // Display the first 500 characters of the response string.
                 Log.e("request", "Response is: ${response.toString()}")
                 if (response.toBoolean()) {
                     sendNotification()
                 }
             },
-            Response.ErrorListener { e -> Log.e("e", e.message!!) })
+            { e -> Log.e("e", e.message!!) })
 
 // Add the request to the RequestQueue.
         queue.add(stringRequest)
 
     }
 
-    fun sendNotification() {
-        val name = "test"
-        val descriptionText = "test"
+    private fun sendNotification() {
+        val name = getString(R.string.notification_name)
+        val descriptionText = getString(R.string.notification_description)
+        val title: String = getString(R.string.notification_content_title)
+        val contentText = getString(R.string.notification_content_text)
 
-        var builder = NotificationCompat.Builder(this, CHANNEL_ID)
+        Log.e(title, contentText)
+        val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.person)
-            .setContentTitle("Je kan kitennnn broer")
-            .setContentText("De wind ligt lekker werken jij")
+            .setContentTitle(title)
+            .setContentText(R.string.notification_content_text.toString())
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setSound(alarmSound)
 
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -101,11 +106,6 @@ class SyncService : Service() {
             }
         }
 
-
-
-    }
-
-    private fun createNotificationChannel() {
 
     }
 

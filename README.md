@@ -5,6 +5,8 @@ Based on that information the app will send a notification to the user that the 
 
 Fly breezy folks
 
+
+
 # START THE APPLICATION
 make sure you have docker-compose installed on your computer
 

@@ -1,7 +1,6 @@
 package com.jandorresteijn.kiteapp
 
 import android.Manifest
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter
 import android.content.pm.PackageManager
@@ -14,12 +13,14 @@ import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
-import androidx.navigation.ui.*
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.jandorresteijn.kiteapp.databinding.MainActivityBinding
 import com.jandorresteijn.kiteapp.ui.main.map.LocationViewModel
 import org.osmdroid.config.Configuration
-import java.util.logging.Filter
 
 
 class MainActivity : AppCompatActivity() {
@@ -48,11 +49,13 @@ class MainActivity : AppCompatActivity() {
 
         initNavigation()
         //load/initialize the osmdroid configuration, this can be done
-        val ctx: Context = getApplicationContext();
-        Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
-        checkPermissionsState();
+        val ctx: Context = getApplicationContext()
 
-        var filter = IntentFilter("com.jandorresteijn.LEAN")
+        // depricated but won't suggest other method
+        Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx))
+        checkPermissionsState()
+
+        val filter = IntentFilter("com.jandorresteijn.LEAN")
         registerReceiver(BootReceiver, filter)
 
     }
@@ -66,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.home_fragment,
+                R.id.nav_home_fragment,
                 R.id.nav_notification,
             ), drawerLayout
         )

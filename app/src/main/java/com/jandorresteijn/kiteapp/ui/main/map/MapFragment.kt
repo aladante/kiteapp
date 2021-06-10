@@ -1,8 +1,7 @@
 package com.jandorresteijn.kiteapp.ui.main.map
 
-import android.content.BroadcastReceiver
+import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +13,6 @@ import androidx.fragment.app.Fragment
 import com.jandorresteijn.kiteapp.R
 import com.jandorresteijn.kiteapp.entity.Location
 import com.jandorresteijn.kiteapp.entity.LocationRepository
-import com.jandorresteijn.kiteapp.ui.main.MainViewModel
 import kotlinx.android.synthetic.main.map_fragment.*
 import kotlinx.coroutines.runBlocking
 import org.osmdroid.api.IMapController
@@ -27,26 +25,19 @@ import org.osmdroid.views.overlay.Marker
 import java.util.*
 
 
-const val BUNDLE_REMINDER_KEY = "bundle_location"
-const val REQ_REMINDER_KEY = "req_location"
-
 class MapFragment : Fragment() {
 
     private lateinit var mMap: MapView
     private lateinit var mMapControler: IMapController
-    private lateinit var confirm_button: Button
+    private lateinit var confirmButton: Button
+    private var longitude: Double = 3.9041
+    private var latitude: Double = 52.367
     private var repo: LocationRepository? = null
     private var loc: Location? = null
-    var myMarkers: ArrayList<Marker?>? = ArrayList()
-
-    //    var myItemizedOverlay: MyItemizedOverlay? = null
-    var marker: Drawable? = null
+    private var myMarkers: ArrayList<Marker?>? = ArrayList()
 
     companion object {
-        fun newInstance() = MapFragment()
     }
-
-    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,15 +49,12 @@ class MapFragment : Fragment() {
         mMap.isClickable
         mMap.setTileSource(TileSourceFactory.MAPNIK)
         mMapControler = mMap.controller
-        confirm_button = v.findViewById(R.id.confirm_button)
-
+        confirmButton = v.findViewById(R.id.confirm_button)
         return v
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val longitude = 3.9041
-        val latitude = 52.367
         loc = Location(longitude = longitude, latidude = latitude)
         val mapPoint = GeoPoint(latitude, longitude)
         mMapControler.setCenter(mapPoint)
@@ -81,10 +69,11 @@ class MapFragment : Fragment() {
         for (m in myMarkers!!) {
             mMap.getOverlays().remove(m)
         }
-        val longitude: Double = location.longitude?.toDouble() ?: 3.9041
-        val latitude: Double = location.latidude?.toDouble() ?: 52.367
+
+        val icon = resources.getDrawable(R.drawable.marker_default, null)
+        longitude = location.longitude ?: 3.9041
+        latitude = location.latidude ?: 52.367
         val mapPoint = GeoPoint(latitude, longitude)
-        val icon = resources.getDrawable(R.drawable.marker_default)
         val startMarker = Marker(mMap)
         startMarker.position = mapPoint
         startMarker.icon = icon
@@ -96,8 +85,8 @@ class MapFragment : Fragment() {
     private fun addEvent() {
         mMap.overlays.add(MapEventsOverlay(object : MapEventsReceiver {
             override fun singleTapConfirmedHelper(p: GeoPoint): Boolean {
-                var long: Double = p.longitude
-                var lat: Double = p.latitude
+                val long: Double = p.longitude
+                val lat: Double = p.latitude
                 loc = Location(latidude = lat, longitude = long)
                 addOverlay(loc!!)
                 return true
@@ -109,13 +98,30 @@ class MapFragment : Fragment() {
             }
         }))
 
-        confirm_button.setOnClickListener {
+        confirmButton.setOnClickListener {
             if (loc != null) {
-                repo?.addLocation(loc!!)
+                AlertDialog.Builder(activity)
+                    .setTitle(getString(R.string.map_fragment_confirm))
+                    .setMessage(getString(R.string.map_fragment_message))
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(
+                        android.R.string.yes,
+                    ) { dialog, whichButton ->
+                        repo?.addLocation(loc!!)
+                    }
+                    .setNegativeButton(android.R.string.no, null).show()
+
             } else {
-                Toast.makeText(activity, "No location set", Toast.LENGTH_LONG)
+                Toast.makeText(
+                    activity,
+                    R.string.map_fragment_no_location_chosen.toString(),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
+
+        // this button is to test intent, boot intent can only by trigger on a real phone or trigger it
+        // with terminal but this is easier and also learn about intent
 
         test_button.setOnClickListener {
             Intent().also { intent ->
@@ -127,9 +133,9 @@ class MapFragment : Fragment() {
         }
     }
 
-    fun triggerCoroutine() {
+    private fun triggerCoroutine() {
         runBlocking {
-            var location = repo?.getLocation()
+            val location = repo?.getLocation()
             if (location != null) {
                 for (loc_loop in location) {
                     addOverlay(loc_loop)
