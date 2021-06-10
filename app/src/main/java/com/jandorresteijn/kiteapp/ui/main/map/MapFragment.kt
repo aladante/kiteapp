@@ -84,7 +84,7 @@ class MapFragment : Fragment() {
         val longitude: Double = location.longitude?.toDouble() ?: 3.9041
         val latitude: Double = location.latidude?.toDouble() ?: 52.367
         val mapPoint = GeoPoint(latitude, longitude)
-        val icon = resources.getDrawable(R.drawable.ic_menu_camera)
+        val icon = resources.getDrawable(R.drawable.marker_default)
         val startMarker = Marker(mMap)
         startMarker.position = mapPoint
         startMarker.icon = icon
@@ -130,7 +130,6 @@ class MapFragment : Fragment() {
     fun triggerCoroutine() {
         runBlocking {
             var location = repo?.getLocation()
-            Log.e("MapView", location.toString())
             if (location != null) {
                 for (loc_loop in location) {
                     addOverlay(loc_loop)

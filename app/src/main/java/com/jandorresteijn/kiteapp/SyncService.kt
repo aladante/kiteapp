@@ -1,10 +1,16 @@
 package com.jandorresteijn.kiteapp
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -14,6 +20,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 
+private val CHANNEL_ID = "i.apps.notifications"
 
 class SyncService : Service() {
 
@@ -45,7 +52,8 @@ class SyncService : Service() {
         Log.e("iets", "nog ietsssss ")
         // call async http request
         // own ip here local host is blocked
-        var url = "http://<YOUR_IP_HERE>:8000/wind_server"
+
+        var url = "http://172.20.50.228:8000/wind_server"
 
         val queue = Volley.newRequestQueue(this)
 
@@ -54,14 +62,52 @@ class SyncService : Service() {
             Response.Listener<String> { response ->
                 // Display the first 500 characters of the response string.
                 Log.e("request", "Response is: ${response.toString()}")
+                if (response.toBoolean()) {
+                    sendNotification()
+                }
             },
-            Response.ErrorListener { e -> Log.e("e", e.message!!)})
+            Response.ErrorListener { e -> Log.e("e", e.message!!) })
 
 // Add the request to the RequestQueue.
         queue.add(stringRequest)
 
     }
 
+    fun sendNotification() {
+        val name = "test"
+        val descriptionText = "test"
+
+        var builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.person)
+            .setContentTitle("Je kan kitennnn broer")
+            .setContentText("De wind ligt lekker werken jij")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+
+            with(NotificationManagerCompat.from(this)) {
+                notificationManager.notify(1234, builder.build())
+            }
+        }
+
+
+
+    }
+
+    private fun createNotificationChannel() {
+
+    }
 
     companion object {
         // default interval for syncing data

@@ -18,7 +18,7 @@ class ResponseModel(BaseModel):
 @app.get("/wind_server")
 async def root(lat: Optional[str] = None, lon: Optional[str] = None) -> bool:
 
-    if settings.counter < 5:
+    if settings.counter < 20:
         settings.counter += 1 
         print(settings.counter)
         return False
