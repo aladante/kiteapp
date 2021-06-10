@@ -84,7 +84,7 @@ class SyncService : Service() {
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.person)
             .setContentTitle(title)
-            .setContentText(R.string.notification_content_text.toString())
+            .setContentText(contentText)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setSound(alarmSound)
 
