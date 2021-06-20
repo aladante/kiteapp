@@ -4,10 +4,11 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "locationTable")
-data class Location(
+@Entity(tableName = "userTable")
+data class User(
     @PrimaryKey() val uid: Int = 0,
     @ColumnInfo(name = "lat") val latidude: Double?,
-    @ColumnInfo(name = "long") val longitude: Double?
+    @ColumnInfo(name = "long") val longitude: Double?,
+    @ColumnInfo(name = "hour_notification") val hour_notification: Int? = 4
 )
 

@@ -11,8 +11,8 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.jandorresteijn.kiteapp.R
-import com.jandorresteijn.kiteapp.entity.Location
-import com.jandorresteijn.kiteapp.entity.LocationRepository
+import com.jandorresteijn.kiteapp.entity.User
+import com.jandorresteijn.kiteapp.entity.UserRepository
 import kotlinx.android.synthetic.main.map_fragment.*
 import kotlinx.coroutines.runBlocking
 import org.osmdroid.api.IMapController
@@ -32,8 +32,8 @@ class MapFragment : Fragment() {
     private lateinit var confirmButton: Button
     private var longitude: Double = 3.9041
     private var latitude: Double = 52.367
-    private var repo: LocationRepository? = null
-    private var loc: Location? = null
+    private var repo: UserRepository? = null
+    private var user: User? = null
     private var myMarkers: ArrayList<Marker?>? = ArrayList()
 
     companion object {
@@ -44,7 +44,7 @@ class MapFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val v: View = inflater.inflate(R.layout.map_fragment, null)
-        repo = LocationRepository(activity!!)
+        repo = UserRepository(activity!!)
         mMap = v.findViewById<View>(R.id.map) as MapView
         mMap.isClickable
         mMap.setTileSource(TileSourceFactory.MAPNIK)
@@ -55,7 +55,7 @@ class MapFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loc = Location(longitude = longitude, latidude = latitude)
+        user = User(longitude = longitude, latidude = latitude)
         val mapPoint = GeoPoint(latitude, longitude)
         mMapControler.setCenter(mapPoint)
         mMapControler.setZoom(8.5)
@@ -65,7 +65,7 @@ class MapFragment : Fragment() {
 
     }
 
-    private fun addOverlay(location: Location) {
+    private fun addOverlay(location: User) {
         for (m in myMarkers!!) {
             mMap.getOverlays().remove(m)
         }
@@ -87,8 +87,8 @@ class MapFragment : Fragment() {
             override fun singleTapConfirmedHelper(p: GeoPoint): Boolean {
                 val long: Double = p.longitude
                 val lat: Double = p.latitude
-                loc = Location(latidude = lat, longitude = long)
-                addOverlay(loc!!)
+                user = User(latidude = lat, longitude = long)
+                addOverlay(user!!)
                 return true
             }
 
@@ -99,7 +99,7 @@ class MapFragment : Fragment() {
         }))
 
         confirmButton.setOnClickListener {
-            if (loc != null) {
+            if (user != null) {
                 AlertDialog.Builder(activity)
                     .setTitle(getString(R.string.map_fragment_confirm))
                     .setMessage(getString(R.string.map_fragment_message))
@@ -107,7 +107,7 @@ class MapFragment : Fragment() {
                     .setPositiveButton(
                         android.R.string.yes,
                     ) { dialog, whichButton ->
-                        repo?.addLocation(loc!!)
+                        repo?.addUser(user!!)
                     }
                     .setNegativeButton(android.R.string.no, null).show()
 
@@ -135,7 +135,7 @@ class MapFragment : Fragment() {
 
     private fun triggerCoroutine() {
         runBlocking {
-            val location = repo?.getLocation()
+            val location = repo?.getUser()
             if (location != null) {
                 for (loc_loop in location) {
                     addOverlay(loc_loop)

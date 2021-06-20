@@ -10,28 +10,34 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import java.time.LocalDateTime
+import java.time.LocalDateTime.MIN
+import java.time.LocalDateTime.now
 
 
 private const val CHANNEL_ID = "i.apps.notifications"
 
 class SyncService : Service() {
+    var hadBeenSend: Boolean = false;
 
     private var mHandler: Handler? = null
 
     // task to be run here
     private val runnableService: Runnable by lazy {
         object : Runnable {
-        override fun run() {
-            syncData()
-            // Repeat this runnable code block again every ... min
-            mHandler?.postDelayed(this, DEFAULT_SYNC_INTERVAL)
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun run() {
+                syncData()
+                // Repeat this runnable code block again every ... min
+                mHandler?.postDelayed(this, DEFAULT_SYNC_INTERVAL)
+            }
         }
-    }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -46,13 +52,17 @@ class SyncService : Service() {
         TODO("Not yet implemented")
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @Synchronized
     private fun syncData() {
-        Log.e("iets", "nog ietsssss ")
         // call async http request
         // own ip here local host is blocked
 
-        val url = "http://172.20.50.228:8000/wind_server"
+        if (!isCorrectTime()){
+            return
+        }
+
+        val url = "http://192.168.178.17:8000/wind_server"
 
         val queue = Volley.newRequestQueue(this)
 
@@ -70,6 +80,21 @@ class SyncService : Service() {
 // Add the request to the RequestQueue.
         queue.add(stringRequest)
 
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun isCorrectTime(): Boolean {
+        var currentTime: LocalDateTime? = now();
+        // set custom time
+        var timeFrame: LocalDateTime? = MIN;
+
+        if (currentTime!!.hour == timeFrame!!.hour && hadBeenSend != true) {
+            hadBeenSend = true
+            return true
+        } else{
+            hadBeenSend  = false
+            return false
+        }
     }
 
     private fun sendNotification() {
