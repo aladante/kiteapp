@@ -107,7 +107,7 @@ class MapFragment : Fragment() {
                     .setPositiveButton(
                         android.R.string.yes,
                     ) { dialog, whichButton ->
-                        repo?.addUser(user!!)
+                            repo?.addUser(user!!)
                     }
                     .setNegativeButton(android.R.string.no, null).show()
 
@@ -135,11 +135,9 @@ class MapFragment : Fragment() {
 
     private fun triggerCoroutine() {
         runBlocking {
-            val location = repo?.getUser()
-            if (location != null) {
-                for (loc_loop in location) {
-                    addOverlay(loc_loop)
-                }
+            val user: User? = repo?.getUser()
+            if (user != null) {
+                addOverlay(user)
             }
         }
     }

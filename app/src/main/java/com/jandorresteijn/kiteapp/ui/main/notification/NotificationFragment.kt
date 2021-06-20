@@ -11,6 +11,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.jandorresteijn.kiteapp.R
 import com.jandorresteijn.kiteapp.databinding.NotificationFragmentBinding
+import com.jandorresteijn.kiteapp.entity.User
+import com.jandorresteijn.kiteapp.entity.UserRepository
+import kotlinx.coroutines.runBlocking
 import org.osmdroid.views.MapView
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,6 +21,7 @@ import java.util.*
 class NotificationFragment : Fragment() {
 
     private lateinit var notificationViewModel: NotificationViewModel
+    private lateinit var repo: UserRepository
     private var _binding: NotificationFragmentBinding? = null
 
     // This property is only valid between onCreateView and
@@ -34,6 +38,8 @@ class NotificationFragment : Fragment() {
         _binding = NotificationFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        repo = UserRepository(activity!!)
+
         val textView: TextView = binding.notificationText
         notificationViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
@@ -43,10 +49,11 @@ class NotificationFragment : Fragment() {
             val cal = Calendar.getInstance()
             val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
-                cal.set(Calendar.MINUTE, minute)
+                runBlocking { UpdateUser(hour) }
+
                 //TODO use @String module with variable
                 textView.text =
-                    "You will be notified at " + SimpleDateFormat("HH:mm").format(cal.time)
+                    "You will be notified at " + SimpleDateFormat("HH:mm").format(hour)
             }
             TimePickerDialog(
                 activity,
@@ -59,9 +66,14 @@ class NotificationFragment : Fragment() {
         return root
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    suspend fun UpdateUser(hour: Int) {
+        val user = repo.getUser()
+        user.hour_notification = hour
+        repo.addUser(user)
     }
 }
