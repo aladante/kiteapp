@@ -1,6 +1,9 @@
 package com.jandorresteijn.kiteapp.ui.main.notification
 
 import android.app.TimePickerDialog
+import android.content.Intent
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,14 +12,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.jandorresteijn.kiteapp.R
 import com.jandorresteijn.kiteapp.databinding.NotificationFragmentBinding
-import com.jandorresteijn.kiteapp.entity.User
 import com.jandorresteijn.kiteapp.entity.UserRepository
 import kotlinx.coroutines.runBlocking
-import org.osmdroid.views.MapView
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class NotificationFragment : Fragment() {
 
@@ -63,6 +64,15 @@ class NotificationFragment : Fragment() {
                 true
             ).show()
         }
+
+        binding.notificationSoundButton.setOnClickListener {
+            val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone")
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, null as Uri?)
+            this.startActivityForResult(intent, 5)
+
+        }
         return root
     }
 
@@ -70,6 +80,7 @@ class NotificationFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 
     suspend fun UpdateUser(hour: Int) {
         val user = repo.getUser()

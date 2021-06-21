@@ -13,6 +13,7 @@
 	<string name="menu_location">Change location</string>
 	<string name="menu_notification">Notification</string>
 
+	<string name="choose_notification_sound">Choose a notification sound</string>
 	<string name="pick_time">Choose a time</string>
 	<!--map-->
 	<string name="map_fragment_no_location_chosen">You haven\'t chosen a location</string>

@@ -16,15 +16,21 @@ import androidx.core.app.NotificationManagerCompat
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.jandorresteijn.kiteapp.entity.User
+import com.jandorresteijn.kiteapp.entity.UserRepository
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
-import java.time.LocalDateTime.MIN
 import java.time.LocalDateTime.now
 
 
 private const val CHANNEL_ID = "i.apps.notifications"
 
 class SyncService : Service() {
+
+    private val repo: UserRepository = UserRepository(this)
     var hadBeenSend: Boolean = false;
+
+    var user: User? = null;
 
     private var mHandler: Handler? = null
 
@@ -33,6 +39,11 @@ class SyncService : Service() {
         object : Runnable {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun run() {
+                runBlocking {
+                    if (user == null) {
+                        user = repo.getUser()
+                    }
+                }
                 syncData()
                 // Repeat this runnable code block again every ... min
                 mHandler?.postDelayed(this, DEFAULT_SYNC_INTERVAL)
@@ -58,7 +69,7 @@ class SyncService : Service() {
         // call async http request
         // own ip here local host is blocked
 
-        if (!isCorrectTime()){
+        if (!isCorrectTime()) {
             return
         }
 
@@ -85,14 +96,17 @@ class SyncService : Service() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun isCorrectTime(): Boolean {
         var currentTime: LocalDateTime? = now();
-        // set custom time
-        var timeFrame: LocalDateTime? = MIN;
+        // 9 default time
+        var timeFrame: Int? = DEFAULT_TIME
+        if (user != null) {
+            timeFrame = user!!.hour_notification
+        }
 
-        if (currentTime!!.hour == timeFrame!!.hour && hadBeenSend != true) {
+        if (currentTime!!.hour == timeFrame && hadBeenSend != true) {
             hadBeenSend = true
             return true
-        } else{
-            hadBeenSend  = false
+        } else {
+            hadBeenSend = false
             return false
         }
     }
@@ -103,7 +117,6 @@ class SyncService : Service() {
         val title: String = getString(R.string.notification_content_title)
         val contentText = getString(R.string.notification_content_text)
 
-        Log.e(title, contentText)
         val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
@@ -135,7 +148,10 @@ class SyncService : Service() {
     }
 
     companion object {
-        // default interval for syncing data
+        // default interval for syncing data will be set to once every 40 minutes in production
+        // for testing purpose this is set to high to highlight the notification
         const val DEFAULT_SYNC_INTERVAL = (30 * 100).toLong()
+        const val DEFAULT_TIME = 9
     }
+
 }
