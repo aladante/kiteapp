@@ -9,6 +9,7 @@ data class User(
     @PrimaryKey() val uid: Int = 0,
     @ColumnInfo(name = "lat") val latidude: Double?,
     @ColumnInfo(name = "long") val longitude: Double?,
-    @ColumnInfo(name = "hour_notification") var hour_notification: Int? = 4
+    @ColumnInfo(name = "hour_notification") var hour_notification: Int? = 4,
+    @ColumnInfo(name = "sound_notification") var sound_notification: String? = null
 )
 

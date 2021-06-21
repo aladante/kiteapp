@@ -1,5 +1,6 @@
 package com.jandorresteijn.kiteapp.ui.main.notification
 
+import android.app.Activity
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.media.RingtoneManager
@@ -81,6 +82,20 @@ class NotificationFragment : Fragment() {
         _binding = null
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+        if (resultCode == Activity.RESULT_OK && requestCode == 5) {
+            val uri = intent?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
+            if (uri != null) {
+                runBlocking {
+                    val user = repo.getUser()
+                    user.sound_notification = uri.toString()
+                    repo.addUser(user)
+                }
+
+            } else {
+            }
+        }
+    }
 
     suspend fun UpdateUser(hour: Int) {
         val user = repo.getUser()
