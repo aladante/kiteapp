@@ -70,10 +70,10 @@ class SyncService : Service() {
     private fun syncData() {
         // call async http request
         // own ip here local host is blocked
-
         if (!isCorrectTime()) {
             return
         }
+        Log.e("in sync data", isCorrectTime().toString())
 
         val url = "http://192.168.178.17:8000/wind_server"
 
@@ -128,7 +128,6 @@ class SyncService : Service() {
             .setSmallIcon(R.drawable.person)
             .setContentTitle(title)
             .setContentText(contentText)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
 
         // Create the NotificationChannel, but only on API 26+ because

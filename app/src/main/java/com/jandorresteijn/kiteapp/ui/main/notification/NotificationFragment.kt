@@ -5,7 +5,9 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,7 +74,6 @@ class NotificationFragment : Fragment() {
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone")
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, null as Uri?)
             this.startActivityForResult(intent, 5)
-
         }
         return root
     }
@@ -89,10 +90,17 @@ class NotificationFragment : Fragment() {
                 runBlocking {
                     val user = repo.getUser()
                     user.sound_notification = uri.toString()
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (Settings.System.canWrite(activity)) {
+                            RingtoneManager.setActualDefaultRingtoneUri(
+                                activity,
+                                RingtoneManager.TYPE_RINGTONE,
+                                uri
+                            );
+                        }
+                    }
                     repo.addUser(user)
                 }
-
-            } else {
             }
         }
     }
