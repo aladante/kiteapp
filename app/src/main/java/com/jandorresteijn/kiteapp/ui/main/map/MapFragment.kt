@@ -80,6 +80,7 @@ class MapFragment : Fragment() {
         startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_TOP)
         myMarkers?.add(startMarker)
         mMap.overlays.add(startMarker)
+        mMapControler.animateTo(mapPoint)
     }
 
     private fun addEvent() {
