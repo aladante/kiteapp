@@ -36,8 +36,7 @@ class MapFragment : Fragment() {
     private var user: User? = null
     private var myMarkers: ArrayList<Marker?>? = ArrayList()
 
-    companion object {
-    }
+    companion object;
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,7 +66,7 @@ class MapFragment : Fragment() {
 
     private fun addOverlay(location: User) {
         for (m in myMarkers!!) {
-            mMap.getOverlays().remove(m)
+            mMap.overlays.remove(m)
         }
 
         val icon = resources.getDrawable(R.drawable.marker_default, null)
@@ -107,7 +106,7 @@ class MapFragment : Fragment() {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setPositiveButton(
                         android.R.string.yes,
-                    ) { dialog, whichButton ->
+                    ) { _, _->
                             repo?.addUser(user!!)
                     }
                     .setNegativeButton(android.R.string.no, null).show()
@@ -126,7 +125,7 @@ class MapFragment : Fragment() {
 
         test_button.setOnClickListener {
             Intent().also { intent ->
-                intent.setAction("com.jandorresteijn.LEAN")
+                intent.action = "com.jandorresteijn.LEAN"
                 intent.putExtra("data", "Nothing to see here, move along.")
                 context!!.sendBroadcast(intent)
             }

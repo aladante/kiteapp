@@ -32,11 +32,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: MainActivityBinding
     private var BootReceiver: BootReceiver = BootReceiver()
 
-    override fun onStart() {
-        super.onStart()
-
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -49,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         initNavigation()
         //load/initialize the osmdroid configuration, this can be done
-        val ctx: Context = getApplicationContext()
+        val ctx: Context = applicationContext
 
         // depricated but won't suggest other method
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx))
@@ -116,7 +111,7 @@ class MainActivity : AppCompatActivity() {
             Manifest.permission.ACCESS_WIFI_STATE
         )
         if (internetPermissionCheck == PackageManager.PERMISSION_GRANTED && networkStatePermissionCheck == PackageManager.PERMISSION_GRANTED && writeExternalStoragePermissionCheck == PackageManager.PERMISSION_GRANTED && coarseLocationPermissionCheck == PackageManager.PERMISSION_GRANTED && fineLocationPermissionCheck == PackageManager.PERMISSION_GRANTED && wifiStatePermissionCheck == PackageManager.PERMISSION_GRANTED) {
-            System.out.println("lean")
+            println("lean")
         } else {
             ActivityCompat.requestPermissions(
                 this, arrayOf(

@@ -23,6 +23,7 @@ It very important to change this as this will be the server which the applicatio
 
 # NOTE do not use localhost or 127.0.0.1 it need the actual IP adrress. localhost isn't allowed on android
 # NOTE the app now does request to the server ```const val DEFAULT_SYNC_INTERVAL = (30 * 100).toLong()``` in production this will be set to 35 min to send 1 message in a hour
+# NOTE notification can only changed before service started. The app will reuse the notification instance and the sound won't be reset. As it runs as a background progress the sound will only change on reboot/uninstall and then change. This will registrate the new sound
 
 
 

@@ -11,14 +11,11 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.jandorresteijn.kiteapp.databinding.NotificationFragmentBinding
 import com.jandorresteijn.kiteapp.entity.UserRepository
 import kotlinx.coroutines.runBlocking
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -35,7 +32,7 @@ class NotificationFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         notificationViewModel =
             ViewModelProvider(this).get(NotificationViewModel::class.java)
 
@@ -47,9 +44,9 @@ class NotificationFragment : Fragment() {
 
         binding.timePickerbtn.setOnClickListener {
             val cal = Calendar.getInstance()
-            val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, _ ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
-                runBlocking { UpdateUser(hour) }
+                runBlocking { updateUser(hour) }
 
             }
             TimePickerDialog(
@@ -89,7 +86,7 @@ class NotificationFragment : Fragment() {
                                 activity,
                                 RingtoneManager.TYPE_RINGTONE,
                                 uri
-                            );
+                            )
                         }
                     }
                     repo.addUser(user)
@@ -98,7 +95,7 @@ class NotificationFragment : Fragment() {
         }
     }
 
-    suspend fun UpdateUser(hour: Int) {
+    private suspend fun updateUser(hour: Int) {
         val user = repo.getUser()
         user.hour_notification = hour
         repo.addUser(user)

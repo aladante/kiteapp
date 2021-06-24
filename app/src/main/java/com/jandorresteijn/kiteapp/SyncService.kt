@@ -30,9 +30,9 @@ private const val CHANNEL_ID = "i.apps.notifications"
 class SyncService : Service() {
 
     private val repo: UserRepository = UserRepository(this)
-    var hadBeenSend: Boolean = false;
+    private var hadBeenSend: Boolean = false
 
-    var user: User? = null;
+    var user: User? = null
 
     private var mHandler: Handler? = null
 
@@ -83,7 +83,7 @@ class SyncService : Service() {
         val stringRequest = StringRequest(Request.Method.GET, url,
             { response ->
                 // Display the first 500 characters of the response string.
-                Log.e("request", "Response is: ${response.toString()}")
+                Log.e("request", "Response is: $response")
                 if (response.toBoolean()) {
                     sendNotification()
                 }
@@ -97,19 +97,19 @@ class SyncService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun isCorrectTime(): Boolean {
-        var currentTime: LocalDateTime? = now();
+        val currentTime: LocalDateTime? = now()
         // 9 default time
         var timeFrame: Int? = DEFAULT_TIME
         if (user != null) {
             timeFrame = user!!.hour_notification
         }
 
-        if (currentTime!!.hour == timeFrame && hadBeenSend != true) {
+        return if (currentTime!!.hour == timeFrame && !hadBeenSend) {
             hadBeenSend = true
-            return true
+            true
         } else {
             hadBeenSend = false
-            return false
+            false
         }
     }
 

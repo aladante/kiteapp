@@ -14,17 +14,16 @@ class UserRepository(context: Context) {
     }
 
     suspend fun getUser(): User {
-        val users: List<User>? = userDao.getUser()
+        val users: List<User> = userDao.getUser()
         Log.e("what", users.toString())
 
-        if (users == null || users.size < 1) {
-            var longitude: Double = 3.9041
-            var latitude: Double = 52.367
-            var user: User = User(latidude = latitude, longitude = longitude)
-            return user
+        if (users.isEmpty()) {
+            val longitude = 3.9041
+            val latitude = 52.367
+            return User(latidude = latitude, longitude = longitude)
         }
 
-        return users.get(0)
+        return users[0]
     }
 
     fun addUser(user: User) {
