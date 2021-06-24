@@ -15,13 +15,14 @@ This will start a deamon that will figurate as the server which the application 
 
 
  Change the IP address to your own IP adrress in the file
- app/src/main/java/com/jandorresteijn/kiteapp/SyncService.kt
+``` app/src/main/java/com/jandorresteijn/kiteapp/SyncService.kt```
+It very important to change this as this will be the server which the application talks to.
+
+# NOTE do not use localhost or 127.0.0.1 it need the actual IP adrress. localhost isn't allowed on android
 
 
 In the application there is button that will trigger the background service 
 The start up intent doesn't registrate in a local setup this is why the trigger was implemented to show the service 
-
-
 
 
 ## MAP
@@ -29,10 +30,6 @@ The start up intent doesn't registrate in a local setup this is why the trigger 
 https://github.com/osmdroid/osmdroid
 
 
-## Stackoverflow easy lookup
-https://stackoverflow.com/questions/17230798/get-the-latitude-and-longitude-of-a-clicked-location-on-the-map-in-osmdroid
 
 
-#TODO
-1. alarm time adjustments
-4. comments
+
