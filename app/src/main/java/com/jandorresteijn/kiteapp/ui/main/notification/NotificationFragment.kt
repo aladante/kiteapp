@@ -44,10 +44,6 @@ class NotificationFragment : Fragment() {
 
         repo = UserRepository(activity!!)
 
-        val textView: TextView = binding.notificationText
-        notificationViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
 
         binding.timePickerbtn.setOnClickListener {
             val cal = Calendar.getInstance()
@@ -55,9 +51,6 @@ class NotificationFragment : Fragment() {
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 runBlocking { UpdateUser(hour) }
 
-                //TODO use @String module with variable
-                textView.text =
-                    "You will be notified at " + SimpleDateFormat("HH:mm").format(hour)
             }
             TimePickerDialog(
                 activity,
